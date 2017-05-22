@@ -1,10 +1,14 @@
+$pixelBase: 20.7;
+@import "../../common/css/function_v2";
 .board{
-  width: 400px;
-  height: 400px;
+  width: rem(800px);
+  height: rem(800px);
+  margin: 0 auto;
   overflow: hidden;
+  float: left;
   .chess{
-    width: 40px;
-    height: 40px;
+    width: rem(80px);
+    height: rem(80px);
     list-style: none;
     position: relative;
     float: left;
@@ -16,26 +20,33 @@
       left:50%;
     }
     .round_common{
-      width: 8px;
-      height:8px;
-      margin-left: -4px;
+      width: rem(12px);
+      height:rem(12px);
+      margin-left: rem(-6px);
       background-color: #333;
-      margin-top: -4px;
+      margin-top: rem(-6px);
     }
-    .round_active{
+    .round_active_white{
       background-color: #f3a33f;
-      width: 20px;
-      height: 20px;
-      margin-left: -10px;
-      margin-top: -10px;
+      width: rem(40px);
+      height: rem(40px);
+      margin-left: rem(-20px);
+      margin-top: rem(-20px);
+    }
+    .round_active_black{
+      background-color: #000;
+      width: rem(40px);
+      height: rem(40px);
+      margin-left: rem(-20px);
+      margin-top: rem(-20px);
     }
   }
   .chess:before{
     content: "";
     display: block;
     background-color: #999;
-    width: 40px;
-    height: 1px;
+    width: rem(80px);
+    height: rem(1px);
     position: absolute;
     top:50%;
     //margin-top: -1px;
@@ -45,10 +56,25 @@
     content: "";
     display: block;
     background-color: #999;
-    width: 1px;
-    height: 40px;
+    width: rem(1px);
+    height: rem(80px);
     position: absolute;
     left:50%;
     //margin-left: -1px;
   }
+}
+.role{
+  width: rem(120px);
+  float: left;
+  margin-top: rem(50px);
+  input{
+    width: rem(20px);
+    height:rem(20px);
+  }
+  .black_chess,.white_chess{
+    font-size: rem(20px);
+    color: #333;
+    list-style: none;
+  }
+
 }
