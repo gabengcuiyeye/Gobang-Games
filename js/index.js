@@ -47,6 +47,7 @@ class Chess {
             y= Math.floor(index / rowNum);
         return '(' + x+','+y+')';
     }
+
     //根据坐标获取棋子信息
     get_chess_mess(){
 
@@ -65,6 +66,7 @@ class Chess {
 
     }
     //判断下棋输赢,该棋子八个方向上是否有五个子连成一条线
+    //算法有错，应该是五个连在一起的棋子，改改改
     judge(chessflag,index){//黑白棋，x，y棋子坐标。直线就是y=x+b
         let x = index % 10,//10应该用变量代替，后期改下
             y= Math.floor(index / 10);
@@ -74,132 +76,221 @@ class Chess {
             count2=0,
             count3=0,
             count4=0;
-        //左右方向，x变化，y不变
+        //左右方向，x变化，y不变，因为这里，加上flag；没法判断黑白棋；记上了呢？
         for (let i = x; i >= 0; i--) {
-            if(wtite_chess_data.indexOf('('+i+','+y+')') == -1 && chessflag===1 ){
-                break;
+            if(chessflag ==1 ){
+                if(wtite_chess_data.indexOf('('+i+','+y+')') != -1){
+                    count1 ++;
+                }else{
+                    break;
+                }
             }
-            console.log(this.count1);
-            count1 ++;
-        }
-        for (let i = x + 1; i < x+4; i++) {
-            if(wtite_chess_data.indexOf('('+i+','+y+')') == -1 && chessflag===1){
-                break;
+            if(chessflag ==2){
+                if(black_chess_data.indexOf('('+i+','+y+')') != -1 ){
+                    count1 ++;
+                }else{
+                    break;
+                }
             }
-            count1 ++;
         }
+        for (let i = x + 1; i < x+5; i++) {
+            if(chessflag ==1){
+                if(wtite_chess_data.indexOf('('+i+','+y+')') != -1){
+                    count1 ++;
+                }else{
+                    break;
+                }
+            }
+            if(chessflag ==2){
+                if(black_chess_data.indexOf('('+i+','+y+')') != -1){
+                    count1 ++;
+                }else{
+                    break;
+                }
+            }
+            // break;
+        }
+        //上下判断
+        for (let i = y; i >= 0; i--) {
+            if(chessflag ==1 ){
+                if(wtite_chess_data.indexOf('('+x+','+i+')') != -1){
+                    count2 ++;
+                }else{
+                    break;
+                }
+            }
+            if(chessflag ==2){
+                if(black_chess_data.indexOf('('+x+','+i+')') != -1 ){
+                    count2 ++;
+                }else{
+                    break;
+                }
+            }
+        }
+        for (let i = y + 1; i < 5; i++) {
+            if(chessflag ==1){
+                if(wtite_chess_data.indexOf('('+i+','+y+')') != -1){
+                    count2 ++;
+                }else{
+                    break;
+                }
+            }
+            if(chessflag ==2){
+                if(black_chess_data.indexOf('('+i+','+y+')') != -1){
+                    count2 ++;
+                }else{
+                    break;
+                }
+            }
+        }
+
+        //左上右下判断
+        for (let i = x, j = y; i >= 0, j >= 0; i--, j--) {
+            if(chessflag ==1 ){
+                if(wtite_chess_data.indexOf('('+i+','+j+')') != -1){
+                    count3 ++;
+                }else{
+                    break;
+                }
+            }
+            if(chessflag ==2){
+                if(black_chess_data.indexOf('('+i+','+j+')') != -1 ){
+                    count3 ++;
+                }else{
+                    break;
+                }
+            }
+        }
+        for (let i = x + 1, j = y + 1; i < x+5, j < y+5; i++, j++) {
+            if(chessflag ==1 ){
+                if(wtite_chess_data.indexOf('('+i+','+j+')') != -1){
+                    count3 ++;
+                }else{
+                    break;
+                }
+            }
+            if(chessflag ==2){
+                if(black_chess_data.indexOf('('+i+','+j+')') != -1 ){
+                    count3 ++;
+                }else{
+                    break;
+                }
+            }
+        }
+
+        //右上左下判断
+        for (var i = x, j = y; i >= 0, j < 15; i--, j++) {
+            if(chessflag ==1 ){
+                if(wtite_chess_data.indexOf('('+i+','+j+')') != -1){
+                    count4 ++;
+                }else{
+                    break;
+                }
+            }
+            if(chessflag ==2){
+                if(black_chess_data.indexOf('('+i+','+j+')') != -1 ){
+                    count4 ++;
+                }else{
+                    break;
+                }
+            }
+        }
+        for (var i = x + 1, j = y - 1; i < 15, j >= 0; i++, j--) {
+            if(chessflag ==1 ){
+                if(wtite_chess_data.indexOf('('+i+','+j+')') != -1){
+                    count4 ++;
+                }else{
+                    break;
+                }
+            }
+            if(chessflag ==2){
+                if(black_chess_data.indexOf('('+i+','+j+')') != -1 ){
+                    count4 ++;
+                }else{
+                    break;
+                }
+            }
+        }
+
         // console.log(this.count1);
-        if(count1 >= 5){
-            alert(999);
+        if(count1 >= 5||count2 >= 5||count3 >= 5||count4 >= 5){
+            //todo 赢了后不能继续下了
+            // alert(999);
+            if(chessflag ==2){
+                alert('黑棋赢了');
+            }else{
+                alert('白棋赢了');
+            }
         }
     }
     init(){
         let that = this;
-        this.chess_flag=0;
+        this.chess_flag=0;//没选黑白棋
         this.wtite_chess= [];
         this.black_chess= [];
         this.count1=0;
+        this.white_turn=false;
+        this.black_turn = false;
 
         //全局变量 黑白棋 0默认 1白 2黑
         document.getElementsByClassName('js_board')[0].addEventListener('click',function (e) {
-            //添加样式
-            let li_chess = common.has_class.call(that,'chess',e.target.className);
-            if(li_chess){
-                e.target.setAttribute('flag',1);//刚刚循环了？为啥？没标记flag?
-                let li_chess_name = e.target.children[0].className;
-                let has_active = common.has_class.call(that,'round_active',li_chess_name);
-                if(has_active){
-                    return ;
+            if(that.chess_flag==0){
+                alert('请选择棋子颜色');
+            }else {//下过子就不能再下了
+                //添加样式
+                if(that.chess_flag==1&&that.white_turn || that.chess_flag==2&&that.black_turn){
+                    let li_chess = common.has_class.call(that,'chess',e.target.className);
+                    if(li_chess){
+                        // e.target.setAttribute('flag',1);//刚刚循环了？为啥？没标记flag?好像没用到
+                        let li_chess_name = e.target.children[0].className;
+                        let has_active = common.has_class.call(that,'round_active',li_chess_name);
+                        if(has_active){
+                            return ;
+                        }
+                        if(that.chess_flag ==1 ){
+                            that.change_class(1,e.target.children[0],'round_active_white','round_common');
+                        }else if(that.chess_flag ==2){
+                            that.change_class(1,e.target.children[0],'round_active_black','round_common');
+                        }
+
+                        //获取li 索引
+                        let index = common.get_li_index.call(that,'js_board',e.target);
+                        //保存坐标信息
+                        that.save_chess_msg.call(that,that.chess_flag,index);
+                        console.log(that.wtite_chess);
+                        // console.log(index);
+                        that.judge.call(that,that.chess_flag,index);
+                        that.black_turn= !that.black_turn;
+                        that.white_turn= !that.white_turn;
+                    }else{
+                        alert('这个地方点过了啊');//li里面的子元素没绑定点击
+                    }
+                }else{
+                    alert('请交换棋子角色');
                 }
-                that.change_class(1,e.target.children[0],'round_active','round_common');
-                //获取li 索引
-                let index = common.get_li_index.call(that,'js_board',e.target);
-                //保存坐标信息
-                that.save_chess_msg.call(that,1,index);
-                console.log(that.wtite_chess);
-                // console.log(index);
-                that.judge.call(that,1,index);
-            }else{
-                alert('这个地方点过了啊');
             }
         });
+        //选择黑白棋
+        document.getElementsByClassName('js_black_chess')[0].onclick=function(){
+            that.chess_flag=2;
+            let check = document.getElementById("white_chess").checked;
+            if(check){
+                that.black_turn =document.getElementById("white_chess").checked= false;//直接写1就好了吧
+            }
+            that.black_turn=true;
+            // that.white_turn=true;
+        };
+
+        document.getElementsByClassName('js_white_chess')[0].onclick=function(){
+            that.chess_flag=1;
+            let check = document.getElementById("black_chess").checked;
+            if(check){
+                that.white_turn =document.getElementById("black_chess").checked= false;
+            }
+            that.white_turn=true;
+            // that.black_turn=true;
+        };
     }
 }
 let chess = new Chess();
 chess.init();
-
-function judge(x, y, chess) {//判断该局棋盘是否赢了
-    var count1 = 0;
-    var count2 = 0;
-    var count3 = 0;
-    var count4 = 0;
-//左右判断
-    for (var i = x; i >= 0; i--) {
-        if (chessData
-                [y] != chess) {
-            break;
-        }
-        count1++;
-    }
-    for (var i = x + 1; i < 15; i++) {
-        if (chessData
-                [y] != chess) {
-            break;
-        }
-        count1++;
-    }
-//上下判断
-    for (var i = y; i >= 0; i--) {
-        if (chessData[x]
-            != chess) {
-            break;
-        }
-        count2++;
-    }
-    for (var i = y + 1; i < 15; i++) {
-        if (chessData[x]
-            != chess) {
-            break;
-        }
-        count2++;
-    }
-//左上右下判断
-    for (var i = x, j = y; i >= 0, j >= 0; i--, j--) {
-        if (chessData
-                [j] != chess) {
-            break;
-        }
-        count3++;
-    }
-    for (var i = x + 1, j = y + 1; i < 15, j < 15; i++, j++) {
-        if (chessData
-                [j] != chess) {
-            break;
-        }
-        count3++;
-    }
-//右上左下判断
-    for (var i = x, j = y; i >= 0, j < 15; i--, j++) {
-        if (chessData
-                [j] != chess) {
-            break;
-        }
-        count4++;
-    }
-    for (var i = x + 1, j = y - 1; i < 15, j >= 0; i++, j--) {
-        if (chessData
-                [j] != chess) {
-            break;
-        }
-        count4++;
-    }
-    if (count1 >= 5 || count2 >= 5 || count3 >= 5 || count4 >= 5) {
-        if (chess == 1) {
-            alert("白棋赢了");
-        }
-        else {
-            alert("黑棋赢了");
-        }
-        isWell = true;//设置该局棋盘已经赢了，不可以再走了
-    }
-}
